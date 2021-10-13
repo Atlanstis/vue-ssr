@@ -1,5 +1,8 @@
 const Vue = require('vue')
-const renderer = require('vue-server-renderer').createRenderer()
+const fs = require('fs')
+const renderer = require('vue-server-renderer').createRenderer({
+  template: fs.readFileSync('./index.template.html', 'utf-8')
+})
 const express = require('express')
 const server = express()
 
@@ -19,19 +22,7 @@ server.get('/', (req, res) => {
     }
     // 设置编码格式
     res.setHeader('Content-Type', 'text/html; charset=utf8')
-    res.end(`
-      <!DOCTYPE html>
-      <html lang="en">
-        <head>
-          <meta charset="utf-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <title></title>
-        </head>
-        <body>
-        ${html}
-        </body>
-      </html>
-      `)
+    res.end(html)
   })
 })
 
