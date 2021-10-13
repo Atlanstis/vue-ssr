@@ -1,18 +1,40 @@
-// 第 1 步：创建一个 Vue 实例
 const Vue = require('vue')
-const app = new Vue({
-  template: `<div id="app">{{ message }}</div>`,
+const renderer = require('vue-server-renderer').createRenderer()
+const express = require('express')
+const server = express()
 
-  data: {
-    message: 'Hello World!'
-  }
+server.get('/', (req, res) => {
+  const app = new Vue({
+    template: `<div id="app">{{ message }}</div>`,
+
+    data: {
+      message: '花非花，雾非雾。'
+    }
+  })
+
+  // 将 Vue 实例渲染为 HTML
+  renderer.renderToString(app, (err, html) => {
+    if (err) {
+      res.status(500).end('Internal Server Error.')
+    }
+    // 设置编码格式
+    res.setHeader('Content-Type', 'text/html; charset=utf8')
+    res.end(`
+      <!DOCTYPE html>
+      <html lang="en">
+        <head>
+          <meta charset="utf-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title></title>
+        </head>
+        <body>
+        ${html}
+        </body>
+      </html>
+      `)
+  })
 })
 
-// 第 2 步：创建一个 renderer
-const renderer = require('vue-server-renderer').createRenderer()
-
-// 第 3 步：将 Vue 实例渲染为 HTML
-renderer.renderToString(app, (err, html) => {
-  if (err) throw err
-  console.log(html)
+server.listen(3000, () => {
+  console.log('server running at port 3000.')
 })
