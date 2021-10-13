@@ -16,14 +16,21 @@ server.get('/', (req, res) => {
   })
 
   // 将 Vue 实例渲染为 HTML
-  renderer.renderToString(app, (err, html) => {
-    if (err) {
-      res.status(500).end('Internal Server Error.')
+  renderer.renderToString(
+    app,
+    {
+      title: '花非花，雾非雾。',
+      meta: `<meta name="description" content="花非花，雾非雾。夜半来，天明去。来如春梦几多时，去似朝云无觅处。">`
+    },
+    (err, html) => {
+      if (err) {
+        res.status(500).end('Internal Server Error.')
+      }
+      // 设置编码格式
+      res.setHeader('Content-Type', 'text/html; charset=utf8')
+      res.end(html)
     }
-    // 设置编码格式
-    res.setHeader('Content-Type', 'text/html; charset=utf8')
-    res.end(html)
-  })
+  )
 })
 
 server.listen(3000, () => {
