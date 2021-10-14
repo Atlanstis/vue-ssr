@@ -34,7 +34,8 @@ const render = (req, res) => {
   renderer.renderToString(
     {
       title: '花非花，雾非雾。',
-      meta: `<meta name="description" content="花非花，雾非雾。夜半来，天明去。来如春梦几多时，去似朝云无觅处。">`
+      meta: `<meta name="description" content="花非花，雾非雾。夜半来，天明去。来如春梦几多时，去似朝云无觅处。">`,
+      url: req.url
     },
     (err, html) => {
       if (err) {
@@ -48,7 +49,7 @@ const render = (req, res) => {
 }
 
 server.get(
-  '/',
+  '*',
   isProd
     ? render
     : async (req, res) => {
