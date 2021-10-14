@@ -4,7 +4,7 @@
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const path = require('path')
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin')
-const resolve = file => path.resolve(__dirname, file)
+const resolve = (file) => path.resolve(__dirname, file)
 
 const isProd = process.env.NODE_ENV === 'production'
 
@@ -24,7 +24,7 @@ module.exports = {
     // 当省略扩展名的时候，按照从前往后的顺序依次解析
     extensions: ['.js', '.vue', '.json']
   },
-  devtool: isProd ? 'source-map' : 'cheap-module-eval-source-map',
+  devtool: isProd ? 'source-map' : 'eval-cheap-module-source-map',
   module: {
     rules: [
       // 处理图片资源
@@ -34,18 +34,16 @@ module.exports = {
           {
             loader: 'url-loader',
             options: {
-              limit: 8192,
-            },
-          },
-        ],
+              limit: 8192
+            }
+          }
+        ]
       },
 
       // 处理字体资源
       {
         test: /\.(woff|woff2|eot|ttf|otf)$/,
-        use: [
-          'file-loader',
-        ],
+        use: ['file-loader']
       },
 
       // 处理 .vue 资源
@@ -59,12 +57,9 @@ module.exports = {
       // 以及 `.vue` 文件中的 `<style>` 块
       {
         test: /\.css$/,
-        use: [
-          'vue-style-loader',
-          'css-loader'
-        ]
-      },
-      
+        use: ['vue-style-loader', 'css-loader']
+      }
+
       // CSS 预处理器，参考：https://vue-loader.vuejs.org/zh/guide/pre-processors.html
       // 例如处理 Less 资源
       // {
@@ -77,8 +72,5 @@ module.exports = {
       // },
     ]
   },
-  plugins: [
-    new VueLoaderPlugin(),
-    new FriendlyErrorsWebpackPlugin()
-  ]
+  plugins: [new VueLoaderPlugin(), new FriendlyErrorsWebpackPlugin()]
 }
