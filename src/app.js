@@ -1,6 +1,15 @@
 import Vue from 'vue'
 import App from './App.vue'
 import { createRouter } from '@/router'
+import VueMeta from 'vue-meta'
+
+Vue.use(VueMeta)
+
+Vue.mixin({
+  metaInfo: {
+    titleTemplate: '%s - 花非花，雾非雾。'
+  }
+})
 
 // 导出一个工厂函数，用于创建新的
 // 应用程序、router 和 store 实例

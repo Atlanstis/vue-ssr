@@ -3,8 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{{ title }}</title>
-    {{{ meta }}}
+    {{{ meta.inject().title.text() }}} {{{ meta.inject().meta.text() }}}
   </head>
   <body>
     <!-- 这里将是应用程序 HTML 标记注入的地方 -->

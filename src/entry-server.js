@@ -7,8 +7,12 @@ export default (context) => {
   return new Promise((resolve, reject) => {
     const { app, router } = createApp()
 
+    const meta = app.$meta()
+
     // 设置服务器端 router 的位置
     router.push(context.url)
+
+    context.meta = meta
 
     // 等到 router 将可能的异步组件和钩子函数解析完
     router.onReady(() => {
