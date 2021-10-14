@@ -1,23 +1,25 @@
 const Vue = require('vue')
 const fs = require('fs')
-const renderer = require('vue-server-renderer').createRenderer({
-  template: fs.readFileSync('./index.template.html', 'utf-8')
-})
+
+const serverBundle = require('./dist/vue-ssr-server-bundle.json')
+const template = fs.readFileSync('./index.template.html', 'utf-8')
+const clientManifest = require('./dist/vue-ssr-client-manifest.json')
+
+const renderer = require('vue-server-renderer').createBundleRenderer(
+  serverBundle,
+  {
+    template,
+    clientManifest
+  }
+)
 const express = require('express')
 const server = express()
 
+server.use('/dist', express.static('./dist'))
+
 server.get('/', (req, res) => {
-  const app = new Vue({
-    template: `<div id="app">{{ message }}</div>`,
-
-    data: {
-      message: '花非花，雾非雾。'
-    }
-  })
-
   // 将 Vue 实例渲染为 HTML
   renderer.renderToString(
-    app,
     {
       title: '花非花，雾非雾。',
       meta: `<meta name="description" content="花非花，雾非雾。夜半来，天明去。来如春梦几多时，去似朝云无觅处。">`
